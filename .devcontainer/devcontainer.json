@@ -6,7 +6,8 @@
 	"image": "mcr.microsoft.com/devcontainers/python:0-3.11",
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {},
-		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
 	"runArgs": [
 		"--env-file",

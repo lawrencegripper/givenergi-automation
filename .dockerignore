@@ -1,3 +1,4 @@
 private.env
 private.*
 *.private.*
+forcast-cache.json

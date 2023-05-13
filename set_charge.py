@@ -78,7 +78,7 @@ tomorrow_forecasts = list(filter(lambda c: c.get("parsed").date() >= tomorrow, f
 predicted_generation = sum([f.get("pv_estimate")/2 for f in tomorrow_forecasts])
 
 # Lets be a bit pessimistic
-predicted_generation = predicted_generation * 0.7
+predicted_generation = predicted_generation * 0.8
 print(f"Predicted generation for tomorrow: {predicted_generation}")
 
 # This is how much we need to get to sunrise
@@ -87,7 +87,7 @@ BATTERY_MIN_CHARGE = 22
 # Update overnight change percentage based on forecast
 # ... Let's do some bad maths....
 battery_capacity_kw = 9.5
-house_direct_solar_consumption_kw = 7.5
+house_direct_solar_consumption_kw = 5.5
 total_usage_kw = (house_direct_solar_consumption_kw + battery_capacity_kw)
 print(f"Total estimated usage: {total_usage_kw}")
 

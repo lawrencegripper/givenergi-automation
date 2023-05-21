@@ -6,3 +6,7 @@ publish:
 
 deploy: publish
 	kubectl apply -f ./Deployment.yaml
+
+test-givenergy-cron:
+	kubectl --namespace givenergy delete job test-set-charge || true
+	kubectl --namespace givenergy create job --from=cronjob/set-charge test-set-charge

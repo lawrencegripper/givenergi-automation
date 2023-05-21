@@ -6,6 +6,7 @@
 import datetime
 import os
 import sys
+from time import timezone
 import backoff
 from pysolcast.rooftop import RooftopSite
 import json
@@ -13,6 +14,11 @@ from givenergy_modbus.client import GivEnergyClient
 from givenergy_modbus.model.inverter import Model
 from givenergy_modbus.model.plant import Plant
 import requests
+import subprocess
+
+currentDateAndTime = datetime.datetime.now()
+print("The current date and time is", currentDateAndTime)
+print(subprocess.check_output("date", shell=True).decode())
 
 def send_signal(msg):
     signal_request = {
@@ -66,19 +72,17 @@ else:
 
 # Caculate predicted generation tomorrow from the forcast
 tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+day_after_tomorrow = datetime.date.today() + datetime.timedelta(days=2)
 
 # parse iso8601 date strings into datetime objects
 for f in forecasts:
     f["parsed"] = datetime.datetime.fromisoformat(f["period_end"])
 
 # filter forcast to just tomorrow
-tomorrow_forecasts = list(filter(lambda c: c.get("parsed").date() >= tomorrow, forecasts))
+tomorrow_forecasts = list(filter(lambda c: c.get("parsed").date() >= tomorrow and c.get("parsed").date() < day_after_tomorrow, forecasts))
 
 # Sum the generation for tomorrow
 predicted_generation = sum([f.get("pv_estimate")/2 for f in tomorrow_forecasts])
-
-# Lets be a bit pessimistic
-predicted_generation = predicted_generation * 0.7
 print(f"Predicted generation for tomorrow: {predicted_generation}")
 
 # This is how much we need to get to sunrise
@@ -87,7 +91,7 @@ BATTERY_MIN_CHARGE = 22
 # Update overnight change percentage based on forecast
 # ... Let's do some bad maths....
 battery_capacity_kw = 9.5
-house_direct_solar_consumption_kw = 7.5
+house_direct_solar_consumption_kw = 15
 total_usage_kw = (house_direct_solar_consumption_kw + battery_capacity_kw)
 print(f"Total estimated usage: {total_usage_kw}")
 
@@ -105,4 +109,4 @@ if predicted_charge_percentage > 100:
 msg = f"Set overnight charge percentage to {predicted_charge_percentage}%\n\nPredicted generation for tomorrow: {predicted_generation}kwh\nTotal estimated usage: {total_usage_kw}kwh"
 send_signal(msg)
 
-update_inverter(predicted_charge_percentage)
+update_inverter(int(predicted_charge_percentage))

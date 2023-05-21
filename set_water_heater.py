@@ -64,4 +64,4 @@ if not currently_on and (current_surplus > 3000):
     send_signal(f"Turned on imersion heater. Surplus: {current_surplus}")
     exit(0)
 
-send_signal(f"Imersion heater not changed. Surplus: {current_surplus}. Currently on?: {currently_on}")
+print(f"Imersion heater not changed. Surplus: {current_surplus}. Currently on?: {currently_on}")

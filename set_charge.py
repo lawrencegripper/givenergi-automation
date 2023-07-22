@@ -44,7 +44,7 @@ def update_inverter(predicted_charge_percentage):
     # Set data
     client.set_battery_target_soc(predicted_charge_percentage)
     # Warning this timing is in UTC not BST/Local time
-    client.set_charge_slot_1((datetime.time(hour=3, minute=00), datetime.time(hour=6, minute=00)))
+    client.set_charge_slot_1((datetime.time(hour=1, minute=00), datetime.time(hour=4, minute=00)))
     # # set the inverter to charge when there's excess, and discharge otherwise. it will also respect charging slots.
     # client.set_mode_dynamic()
 

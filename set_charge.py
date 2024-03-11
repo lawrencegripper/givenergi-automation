@@ -26,7 +26,7 @@ def send_signal(msg):
         "recipients": [ os.environ["SIGNAL_RECEIVE"] ],
         "message": msg,
     }
-    requests.post("http://ubuntu-utilities:30027", json = signal_request)
+    requests.post("http://restapi.signal.svc.cluster.local", json = signal_request)
 
 
 def on_backoff(details):

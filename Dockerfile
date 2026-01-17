@@ -8,4 +8,4 @@ COPY . .
 
 ENTRYPOINT [ "python" ]
 
-LABEL org.opencontainers.image.source https://github.com/lawrencegripper/givenergy-automation
+LABEL org.opencontainers.image.source=https://github.com/lawrencegripper/givenergy-automation

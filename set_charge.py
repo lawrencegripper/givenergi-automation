@@ -28,7 +28,6 @@ def send_signal(msg):
     }
     requests.post("http://restapi.signal.svc.cluster.local", json = signal_request)
 
-
 def on_backoff(details):
     print(f"Backing off {details['wait']} seconds afters {details['tries']} tries calling function {details['target']}. Args: {details['args']}, kwargs: {details['kwargs']}")
     type, value, traceback = sys.exc_info()
@@ -111,3 +110,7 @@ msg = f"Set overnight charge percentage to {predicted_charge_percentage}%\n\nPre
 send_signal(msg)
 
 update_inverter(int(predicted_charge_percentage))
+
+callback_url = os.environ.get("CALLBACK_URL")
+if callback_url:
+    requests.get(callback_url)
